@@ -1,12 +1,5 @@
 type t;
 
-type canvasSize = {
-  width: float,
-  height: float,
-  styleWidth: float,
-  styleHeight: float
-};
-
 [@bs.get] external width : t => float = "width";
 
 [@bs.get] external height : t => float = "height";
