@@ -1,0 +1,1 @@
+let wrapBs = cb => [@bs] (a => cb(a));

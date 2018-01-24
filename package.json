@@ -14,5 +14,8 @@
   "devDependencies": {
     "bs-platform": "^2.1.0",
     "pdfjs-dist": "^2.0.290"
+  },
+  "dependencies": {
+    "bs-webapi": "^0.8.1"
   }
 }
