@@ -1,6 +1,6 @@
-# Basic Reason Template
+BuckleScript bindings to [pdfjs](https://github.com/mozilla/pdf.js).
 
-Hello! This project allows you to quickly get started with Reason and BuckleScript. If you wanted a more sophisticated version, try the `react` template (`bsb -theme react -init .`).
+Status: Incomplete, but functional for building a renderer.
 
 # Build
 ```
