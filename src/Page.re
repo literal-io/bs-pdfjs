@@ -2,7 +2,15 @@ type t;
 
 type textContentStream;
 
-type textContent;
+module TextItem = {
+  type t;
+  [@bs.get] external str : t => string = "";
+};
+
+module TextContent = {
+  type t;
+  [@bs.send] external getTextItems : t => array(TextItem.t) = "";
+};
 
 [@bs.get] external pageNumber : t => int = "";
 
@@ -10,7 +18,28 @@ type textContent;
 
 [@bs.send] external streamTextContent : t => textContentStream = "";
 
-[@bs.send] external getTextContent : t => textContent = "";
+[@bs.send] external getTextContent : t => Js.Promise.t(TextContent.t) = "";
+
+[@bs.send.pipe : t]
+external getTextContentWithParams :
+  {
+    .
+    "normalizeWhitespace": Js.boolean,
+    "disableCombineTextItems": Js.boolean
+  } =>
+  Js.Promise.t(TextContent.t) =
+  "getTextContent";
+
+let getTextContentWithParams =
+    (~normalizeWhitespace=false, ~disableCombineTextItems=false, pdfPage) =>
+  getTextContentWithParams(
+    {
+      "normalizeWhitespace": Js.Boolean.to_js_boolean(normalizeWhitespace),
+      "disableCombineTextItems":
+        Js.Boolean.to_js_boolean(disableCombineTextItems)
+    },
+    pdfPage
+  );
 
 [@bs.send]
 external render :

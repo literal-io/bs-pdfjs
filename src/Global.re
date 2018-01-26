@@ -27,7 +27,7 @@ let getDocument = (source, pdfjs) =>
 external renderTextLayer :
   {
     .
-    "textContent": Js.Nullable.t(Page.textContent),
+    "textContent": Js.Nullable.t(Page.TextContent.t),
     "textContentStream": Js.Nullable.t(Page.textContentStream),
     "viewport": Viewport.t,
     "container": Dom.element,
