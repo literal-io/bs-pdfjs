@@ -9,7 +9,7 @@ module TextItem = {
 
 module TextContent = {
   type t;
-  [@bs.send] external getTextItems : t => array(TextItem.t) = "";
+  [@bs.get] external textItems : t => array(TextItem.t) = "items";
 };
 
 [@bs.get] external pageNumber : t => int = "";
