@@ -12,9 +12,16 @@ module TextContent = {
   [@bs.get] external textItems : t => array(TextItem.t) = "items";
 };
 
+module Annotation = {
+  type t;
+};
+
 [@bs.get] external pageNumber : t => int = "";
 
 [@bs.send] external getViewport : (t, float, float) => Viewport.t = "";
+
+[@bs.send]
+external getAnnotations : t => Js.Promise.t(array(Annotation.t)) = "";
 
 [@bs.send] external streamTextContent : t => textContentStream = "";
 
