@@ -8,7 +8,7 @@ module Viewer = {
   type t = {
     .
     [@bs.set] "currentPageNumber": int,
-    [@bs.set] "rotation": int,
+    [@bs.set] "pagesRotation": int,
     "scrollPageIntoView":
       {
         .
@@ -26,45 +26,38 @@ module Viewer = {
         ~onScrollPageIntoView,
         ()
       ) => {
-    let initial = {
-      "currentPageNumber": onGetCurrentPageNumber(),
-      "rotation": onGetRotation(),
-      "scrollPageIntoView": ev =>
-        onScrollPageIntoView(
-          ~pageNumber=ev##pageNumber,
-          ~destArray=ev##destArray,
-          ()
-        )
-    };
-    let proxy =
-      Proxy.(
-        make(
-          Params.make(
-            ~get=
-              (obj, prop) =>
-                switch prop {
-                | "currentPageNumber" => onGetCurrentPageNumber()
-                | "rotation" => onGetRotation()
-                | "scrollPageIntoView" => obj##scrollPageIntoView
-                | _ => Js.undefined
-                },
-            ~set=
-              (obj, prop, value) =>
-                switch prop {
-                | "currentPageNumber" =>
-                  onSetCurrentPageNumber(value);
-                  Js.true_;
-                | "rotation" =>
-                  onSetRotation(value);
-                  Js.true_;
-                | _ => Js.false_
-                },
-            ()
-          ),
-          initial
-        )
-      );
-    ();
+    let _make:
+      (unit => int, int => Js.boolean, unit => int, int => Js.boolean, 'a) => t = [%raw
+      {|
+      function (
+        onGetCurrentPageNumber,
+        onSetCurrentPageNumber,
+        onGetRotation,
+        onSetRotation,
+        onScrollPageIntoView
+      ) {
+        return {
+          get currentPageNumber() { return onGetCurrentPageNumber(); },
+          set currentPageNumber(value) { return onSetCurrentPageNumber(value); },
+          get pagesRotation() { return onGetRotation(); },
+          set pagesRotation(value) { return onSetRotation(value); },
+          scrollPageIntoView: onScrollPageIntoView
+        };
+      }
+    |}
+    ];
+    _make(
+      onGetCurrentPageNumber,
+      onSetCurrentPageNumber,
+      onGetRotation,
+      onSetRotation,
+      ev =>
+      onScrollPageIntoView(
+        ~pageNumber=ev##pageNumber,
+        ~destArray=ev##destArray,
+        ()
+      )
+    );
   };
 };
 
@@ -75,7 +68,7 @@ module Viewer = {
  * */
 module PdfLinkService = {
   type t;
-  [@bs.new] [@bs.module "pdfjs-dist/web/pdf_link_service"]
+  [@bs.new] [@bs.module "pdfjs-dist/lib/web/pdf_link_service"]
   external make : unit => t = "PDFLinkService";
   [@bs.send.pipe : t] external setDocument : (Document.t, string) => unit = "";
   [@bs.send.pipe : t] external setViewer : Viewer.t => unit = "";
