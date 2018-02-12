@@ -18,7 +18,11 @@ module Annotation = {
 
 [@bs.get] external pageNumber : t => int = "";
 
-[@bs.send] external getViewport : (t, float, float) => Viewport.t = "";
+[@bs.send]
+external getViewport : (t, float, float, Js.boolean) => Viewport.t = "";
+
+let getViewport = (~scale, ~rotate, ~dontFlip=false, page) =>
+  getViewport(page, scale, rotate, Js.Boolean.to_js_boolean(dontFlip));
 
 [@bs.send]
 external getAnnotations : t => Js.Promise.t(array(Annotation.t)) = "";

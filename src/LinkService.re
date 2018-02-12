@@ -1,7 +1,24 @@
 open InternalUtils;
 
 module Destination = {
-  type t;
+  type t = (string, array(option(float)));
+  /** Destination array is polymorphic, manually coorce to int */
+  external toNullableFloat : {.. "name": string} => Js.nullable(float) =
+    "%identity";
+  /**
+   * Parsing logic depends on viewer state e.g. height, scale, so we
+   * convert into a reasonable state, but leave unparsed.
+   **/
+  let decode = json : t => {
+    let name = json[1]##name;
+    let values =
+      json
+      |> Js.Array.sliceFrom(1)
+      |> Js.Array.map(value => value |> toNullableFloat |> Js.Nullable.to_opt);
+    (name, values);
+  };
+  let name = ((name, _values): t) => name;
+  let idx = (idx, (_name, values): t) => values[idx - 1];
 };
 
 module Viewer = {
@@ -13,7 +30,7 @@ module Viewer = {
       {
         .
         "pageNumber": int,
-        "destArray": Destination.t
+        "destArray": {.}
       } =>
       unit
   };
@@ -54,7 +71,7 @@ module Viewer = {
       ev =>
       onScrollPageIntoView(
         ~pageNumber=ev##pageNumber,
-        ~destArray=ev##destArray,
+        ~destination=Destination.decode(ev##destArray),
         ()
       )
     );
