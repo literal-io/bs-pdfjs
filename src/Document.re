@@ -41,5 +41,7 @@ module Source = {
 
 [@bs.get] external getNumPages : t => int = "numPages";
 
+[@bs.get] external fingerprint : t => string = "";
+
 [@bs.send]
 external getData : t => Js.Promise.t(Js.Typed_array.Int8Array.t) = "";
