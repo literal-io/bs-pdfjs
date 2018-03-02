@@ -1,7 +1,7 @@
 {
   "name": "bs-pdfjs",
   "description": "BuckleScript bindings to PDF.js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",

@@ -45,3 +45,5 @@ module Source = {
 
 [@bs.send]
 external getData : t => Js.Promise.t(Js.Typed_array.Int8Array.t) = "";
+
+[@bs.send] external cleanup : t => unit = "";
