@@ -16,6 +16,11 @@ module Annotation = {
   type t;
 };
 
+module Transform = {
+  type t = array(float);
+  let make = (t1, t2, t3, t4, t5, t6) => [|t1, t2, t3, t4, t5, t6|];
+};
+
 [@bs.get] external pageNumber : t => int = "";
 
 [@bs.send]
@@ -59,11 +64,19 @@ external render :
     {
       .
       "canvasContext": Webapi.Canvas.Canvas2d.t,
-      "viewport": Viewport.t
+      "viewport": Viewport.t,
+      "transform": Js.undefined(array(float))
     }
   ) =>
   RenderTask.t(unit) =
   "";
 
-let render = (~canvasContext, ~viewport, page) =>
-  render(page, {"viewport": viewport, "canvasContext": canvasContext});
+let render = (~canvasContext, ~viewport, ~transform, page) =>
+  render(
+    page,
+    {
+      "viewport": viewport,
+      "canvasContext": canvasContext,
+      "transform": Js.Undefined.from_opt(transform)
+    }
+  );
