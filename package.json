@@ -1,7 +1,7 @@
 {
   "name": "bs-pdfjs",
   "description": "BuckleScript bindings to PDF.js",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
@@ -18,7 +18,7 @@
   "devDependencies": {
     "bs-platform": "^2.1.0",
     "bs-webapi": "^0.8.1",
-    "pdfjs-dist": "2.0.391"
+    "pdfjs-dist": "2.0.466"
   },
   "peerDependencies": {
     "pdfjs-dist": "2.0.466",
