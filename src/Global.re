@@ -1,8 +1,9 @@
 type t;
 
-[@bs.module "pdfjs-dist"] external inst : t = "PDFJS";
+[@bs.module] external inst : t = "pdfjs-dist";
 
-[@bs.set] external setWorkerSrc : (t, string) => unit = "workerSrc";
+[@bs.set] [@bs.scope "GlobalWorkerOptions"]
+external setWorkerSrc : (t, string) => unit = "workerSrc";
 
 [@bs.send.pipe : t]
 external getDocument :

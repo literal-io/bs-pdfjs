@@ -21,7 +21,7 @@
     "pdfjs-dist": "2.0.391"
   },
   "peerDependencies": {
-    "pdfjs-dist": "2.0.391",
+    "pdfjs-dist": "2.0.466",
     "bs-webapi": "^0.8.1"
   }
 }
