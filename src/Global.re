@@ -32,7 +32,8 @@ external renderTextLayer :
     "textContentStream": Js.Nullable.t(Page.textContentStream),
     "viewport": Viewport.t,
     "container": Dom.element,
-    "textDivs": Js.Array.t(Dom.element)
+    "textDivs": Js.Array.t(Dom.element),
+    "enhanceTextSelection": Js.Nullable.t(bool)
   } =>
   RenderTask.t(unit) =
   "";
@@ -44,6 +45,7 @@ let renderTextLayer =
       ~textDivs,
       ~textContent=?,
       ~textContentStream=?,
+      ~enhanceTextSelection=?,
       inst
     ) =>
   renderTextLayer(
@@ -52,7 +54,8 @@ let renderTextLayer =
       "container": container,
       "textDivs": textDivs,
       "textContent": Js.Nullable.from_opt(textContent),
-      "textContentStream": Js.Nullable.from_opt(textContentStream)
+      "textContentStream": Js.Nullable.from_opt(textContentStream),
+      "enhanceTextSelection": Js.Nullable.from_opt(enhanceTextSelection)
     },
     inst
   );
