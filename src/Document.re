@@ -40,6 +40,18 @@ module Source = {
     | (None, Some(data), None, None) => Some(TypedArray({"data": data}))
     | _ => None
     };
+  let url =
+    fun
+    | Url(inst) => Some(inst##url)
+    | TypedArray(_) => None;
+  let httpHeaders =
+    fun
+    | Url(inst) => Js.Nullable.toOption(inst##httpHeaders)
+    | TypedArray(_) => None;
+  let withCredentials =
+    fun
+    | Url(inst) => Js.Nullable.toOption(inst##withCredentials)
+    | TypedArray(_) => None;
 };
 
 [@bs.send.pipe: t] external getPage : int => Js.Promise.t(Page.t) = "";
