@@ -3,4 +3,4 @@ let ( *> ) = (x, f) => {
   x;
 };
 
-let wrapBs = cb => [@bs] (a => cb(a));
+let wrapBs = cb => (. a) => cb(a);

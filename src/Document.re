@@ -54,15 +54,15 @@ module Source = {
     | TypedArray(_) => None;
 };
 
-[@bs.send.pipe: t] external getPage : int => Js.Promise.t(Page.t) = "";
+[@bs.send.pipe: t] external getPage: int => Js.Promise.t(Page.t) = "";
 
-[@bs.send] external getMetadata : t => Js.Promise.t(Metadata.t) = "";
+[@bs.send] external getMetadata: t => Js.Promise.t(Metadata.t) = "";
 
-[@bs.get] external getNumPages : t => int = "numPages";
+[@bs.get] external getNumPages: t => int = "numPages";
 
-[@bs.get] external fingerprint : t => string = "";
+[@bs.get] external fingerprint: t => string = "";
 
 [@bs.send]
-external getData : t => Js.Promise.t(Js.Typed_array.Int8Array.t) = "";
+external getData: t => Js.Promise.t(Js.Typed_array.Int8Array.t) = "";
 
-[@bs.send] external cleanup : t => unit = "";
+[@bs.send] external cleanup: t => unit = "";
