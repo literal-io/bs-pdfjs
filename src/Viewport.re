@@ -15,6 +15,8 @@ type scale =
 
 [@bs.get] external scale: t => float = "";
 
+[@bs.get] external transform: t => Js.Array.t(float) = "";
+
 [@bs.send.pipe: t]
 external convertToPdfPoint: (float, float) => Js.Array.t(float) = "";
 
