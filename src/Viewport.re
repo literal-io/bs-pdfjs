@@ -9,19 +9,21 @@ type scale =
   | ScalePageFit
   | ScaleAuto;
 
-[@bs.get] external width : t => float = "";
+[@bs.get] external width: t => float = "";
 
-[@bs.get] external height : t => float = "";
+[@bs.get] external height: t => float = "";
 
-[@bs.get] external scale : t => float = "";
+[@bs.get] external scale: t => float = "";
 
-[@bs.send.pipe : t]
-external convertToPdfPoint : (float, float) => Js.Array.t(float) = "";
+[@bs.get] external transform: t => Js.Array.t(float) = "";
 
-[@bs.send.pipe : t]
-external convertToViewportPoint : (float, float) => Js.Array.t(float) = "";
+[@bs.send.pipe: t]
+external convertToPdfPoint: (float, float) => Js.Array.t(float) = "";
 
-[@bs.send.pipe : t] external clone : {. "dontFlip": Js.boolean} => t = "";
+[@bs.send.pipe: t]
+external convertToViewportPoint: (float, float) => Js.Array.t(float) = "";
+
+[@bs.send.pipe: t] external clone: {. "dontFlip": bool} => t = "";
 
 let clone = (~dontFlip=false, viewport) =>
-  clone({"dontFlip": Js.Boolean.to_js_boolean(dontFlip)}, viewport);
+  clone({"dontFlip": dontFlip}, viewport);

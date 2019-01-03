@@ -1,12 +1,12 @@
 type t;
 
-[@bs.module] external inst : t = "pdfjs-dist";
+[@bs.module] external inst: t = "pdfjs-dist";
 
 [@bs.set] [@bs.scope "GlobalWorkerOptions"]
-external setWorkerSrc : (t, string) => unit = "workerSrc";
+external setWorkerSrc: (t, string) => unit = "workerSrc";
 
-[@bs.send.pipe : t]
-external getDocument :
+[@bs.send.pipe: t]
+external getDocument:
   (
   [@bs.unwrap]
   [
@@ -18,14 +18,14 @@ external getDocument :
   "";
 
 let getDocument = (source, pdfjs) =>
-  switch source {
+  switch (source) {
   | Document.Source.Url(source) => getDocument(`UrlSource(source), pdfjs)
   | Document.Source.TypedArray(source) =>
     getDocument(`TypedArraySource(source), pdfjs)
   };
 
-[@bs.send.pipe : t]
-external renderTextLayer :
+[@bs.send.pipe: t]
+external renderTextLayer:
   {
     .
     "textContent": Js.Nullable.t(Page.TextContent.t),
@@ -33,7 +33,7 @@ external renderTextLayer :
     "viewport": Viewport.t,
     "container": Dom.element,
     "textDivs": Js.Array.t(Dom.element),
-    "enhanceTextSelection": Js.Nullable.t(bool)
+    "enhanceTextSelection": Js.Nullable.t(bool),
   } =>
   RenderTask.t(unit) =
   "";
@@ -46,29 +46,29 @@ let renderTextLayer =
       ~textContent=?,
       ~textContentStream=?,
       ~enhanceTextSelection=?,
-      inst
+      inst,
     ) =>
   renderTextLayer(
     {
       "viewport": viewport,
       "container": container,
       "textDivs": textDivs,
-      "textContent": Js.Nullable.from_opt(textContent),
-      "textContentStream": Js.Nullable.from_opt(textContentStream),
-      "enhanceTextSelection": Js.Nullable.from_opt(enhanceTextSelection)
+      "textContent": Js.Nullable.fromOption(textContent),
+      "textContentStream": Js.Nullable.fromOption(textContentStream),
+      "enhanceTextSelection": Js.Nullable.fromOption(enhanceTextSelection),
     },
-    inst
+    inst,
   );
 
-[@bs.scope "AnnotationLayer"] [@bs.send.pipe : t]
-external renderAnnotationLayer :
+[@bs.scope "AnnotationLayer"] [@bs.send.pipe: t]
+external renderAnnotationLayer:
   {
     .
     "annotations": array(Page.Annotation.t),
     "viewport": Viewport.t,
     "div": Dom.element,
     "page": Page.t,
-    "linkService": LinkService.t
+    "linkService": LinkService.t,
   } =>
   unit =
   "render";
@@ -81,7 +81,7 @@ let renderAnnotationLayer =
       "annotations": annotations,
       "div": div,
       "page": page,
-      "linkService": linkService
+      "linkService": linkService,
     },
-    inst
+    inst,
   );

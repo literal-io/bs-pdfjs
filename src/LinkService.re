@@ -3,13 +3,13 @@ open InternalUtils;
 module Destination = {
   type t = (string, array(option(float)));
   /** Destination array is polymorphic, manually coorce to int */
-  external toNullableFloat : {.. "name": string} => Js.nullable(float) =
+  external toNullableFloat: {.. "name": string} => Js.nullable(float) =
     "%identity";
   /**
    * Parsing logic depends on viewer state e.g. height, scale, so we
    * convert into a reasonable state, but leave unparsed.
    **/
-  let decode = json : t => {
+  let decode = (json): t => {
     let name = json[1]##name;
     let values =
       json
@@ -30,9 +30,9 @@ module Viewer = {
       {
         .
         "pageNumber": int,
-        "destArray": {.}
+        "destArray": {.},
       } =>
-      unit
+      unit,
   };
   let make =
       (
@@ -41,10 +41,9 @@ module Viewer = {
         ~onSetRotation,
         ~onSetCurrentPageNumber,
         ~onScrollPageIntoView,
-        ()
+        (),
       ) => {
-    let _make:
-      (unit => int, int => Js.boolean, unit => int, int => Js.boolean, 'a) => t = [%raw
+    let _make: (unit => int, int => bool, unit => int, int => bool, 'a) => t = [%raw
       {|
       function (
         onGetCurrentPageNumber,
@@ -72,7 +71,7 @@ module Viewer = {
       onScrollPageIntoView(
         ~pageNumber=ev##pageNumber,
         ~destination=Destination.decode(ev##destArray),
-        ()
+        (),
       )
     );
   };
@@ -86,14 +85,14 @@ module Viewer = {
 module PdfLinkService = {
   type t;
   [@bs.new] [@bs.module "pdfjs-dist/lib/web/pdf_link_service"]
-  external make : unit => t = "PDFLinkService";
-  [@bs.send.pipe : t] external setDocument : (Document.t, string) => unit = "";
-  [@bs.send.pipe : t] external setViewer : Viewer.t => unit = "";
+  external make: unit => t = "PDFLinkService";
+  [@bs.send.pipe: t] external setDocument: (Document.t, string) => unit = "";
+  [@bs.send.pipe: t] external setViewer: Viewer.t => unit = "";
 };
 
 type t = PdfLinkService.t;
 
-let make = (~viewer, ~pdfDocument, ~baseUrl, ()) : t =>
+let make = (~viewer, ~pdfDocument, ~baseUrl, ()): t =>
   PdfLinkService.(
     make() *> setDocument(pdfDocument, baseUrl) *> setViewer(viewer)
   );
