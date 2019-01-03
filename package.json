@@ -17,11 +17,9 @@
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^4.0.14",
-    "bs-webapi": "^0.13.1",
     "pdfjs-dist": "2.0.943"
   },
   "peerDependencies": {
-    "pdfjs-dist": "2.0.943",
-    "bs-webapi": "^0.13.0"
+    "pdfjs-dist": "2.0.943"
   }
 }

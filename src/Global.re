@@ -53,9 +53,9 @@ let renderTextLayer =
       "viewport": viewport,
       "container": container,
       "textDivs": textDivs,
-      "textContent": Js.Nullable.from_opt(textContent),
-      "textContentStream": Js.Nullable.from_opt(textContentStream),
-      "enhanceTextSelection": Js.Nullable.from_opt(enhanceTextSelection),
+      "textContent": Js.Nullable.fromOption(textContent),
+      "textContentStream": Js.Nullable.fromOption(textContentStream),
+      "enhanceTextSelection": Js.Nullable.fromOption(enhanceTextSelection),
     },
     inst,
   );

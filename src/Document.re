@@ -33,8 +33,8 @@ module Source = {
       Some(
         Url({
           "url": url,
-          "httpHeaders": Js.Nullable.from_opt(httpHeaders),
-          "withCredentials": Js.Nullable.from_opt(withCredentials),
+          "httpHeaders": Js.Nullable.fromOption(httpHeaders),
+          "withCredentials": Js.Nullable.fromOption(withCredentials),
         }),
       )
     | (None, Some(data), None, None) => Some(TypedArray({"data": data}))

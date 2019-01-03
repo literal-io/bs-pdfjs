@@ -5,11 +5,22 @@ type textContentStream;
 module TextItem = {
   type t;
   [@bs.get] external str: t => string = "";
+  [@bs.get] external transform: t => Js.Array.t(float) = "";
+  [@bs.get] external fontName: t => string = "";
+  [@bs.get] external width: t => float = "";
+};
+
+module Styles = {
+  type t;
+  [@bs.get] external ascent: t => float = "";
+  [@bs.get] external descent: t => float = "";
+  [@bs.get] external fontFamily: t => string = "";
 };
 
 module TextContent = {
   type t;
   [@bs.get] external textItems: t => array(TextItem.t) = "items";
+  [@bs.get] external textStyles: t => Js.Dict.t(Styles.t) = "styles";
 };
 
 module Annotation = {
@@ -55,26 +66,46 @@ let getTextContentWithParams =
     pdfPage,
   );
 
+[@bs.deriving abstract]
+type canvasAndContext('a, 'b) = {
+  canvas: 'a,
+  context: 'b,
+};
+
+[@bs.deriving abstract]
+type canvasFactory('a, 'b) = {
+  create: (int, int) => canvasAndContext('a, 'b),
+  reset: (canvasAndContext('a, 'b), int, int) => unit,
+  destroy: canvasAndContext('a, 'b) => unit,
+};
+
+[@bs.send]
+external createCanvasAndContext:
+  (canvasFactory('a, 'b), int, int) => canvasAndContext('a, 'b) =
+  "create";
+
 [@bs.send]
 external render:
   (
     t,
     {
       .
-      "canvasContext": Webapi.Canvas.Canvas2d.t,
+      "canvasContext": 'b,
       "viewport": Viewport.t,
       "transform": Js.undefined(array(float)),
+      "canvasFactory": Js.undefined(canvasFactory('a, 'b)),
     }
   ) =>
   RenderTask.t(unit) =
   "";
 
-let render = (~canvasContext, ~viewport, ~transform, page) =>
+let render = (~canvasContext, ~viewport, ~transform, ~canvasFactory, page) =>
   render(
     page,
     {
       "viewport": viewport,
       "canvasContext": canvasContext,
-      "transform": Js.Undefined.from_opt(transform),
+      "transform": Js.Undefined.fromOption(transform),
+      "canvasFactory": Js.Undefined.fromOption(canvasFactory),
     },
   );
