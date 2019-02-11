@@ -23,10 +23,15 @@ module Transform = {
 
 [@bs.get] external pageNumber: t => int = "";
 
-[@bs.send] external getViewport: (t, float, float, bool) => Viewport.t = "";
+[@bs.deriving abstract]
+type viewportParams = {
+  scale: float,
+  rotate: float,
+  [@bs.optional]
+  dontFlip: bool,
+};
 
-let getViewport = (~scale, ~rotate, ~dontFlip=false, page) =>
-  getViewport(page, scale, rotate, dontFlip);
+[@bs.send] external getViewport: (t, viewportParams) => Viewport.t = "";
 
 [@bs.send]
 external getAnnotations: t => Js.Promise.t(array(Annotation.t)) = "";
