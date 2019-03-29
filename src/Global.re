@@ -5,6 +5,11 @@ type t;
 [@bs.set] [@bs.scope "GlobalWorkerOptions"]
 external setWorkerSrc: (t, string) => unit = "workerSrc";
 
+[@bs.get] external getWorkerClass: t => PdfWorkerClass.t = "PdfWorker";
+
+let makeWorker = params =>
+  (inst |> getWorkerClass)->(PdfWorkerClass.make(params));
+
 module DocumentLoadingTask = {
   type t;
   [@bs.get] external promise: t => Js.Promise.t(Document.t) = "";
@@ -15,8 +20,8 @@ external getDocument:
   (
   [@bs.unwrap]
   [
-    | `UrlSource(Document.Source.url)
-    | `TypedArraySource(Document.Source.typedArray)
+    | `UrlSource(Document.Source.urlSource)
+    | `TypedArraySource(Document.Source.typedArraySource)
   ]
   ) =>
   DocumentLoadingTask.t =
